@@ -8,9 +8,10 @@ from ryu.lib import hub
 
 
 class SimpleMonitor13(simple_switch_13.SimpleSwitch13):
-    super(SimpleMonitor13, self).__init__(*args, **kwargs)
-    self.datapaths = {}
-    self.monitor_thread = hub.spawn(self._monitor)
+    def __init__(self, *args, **kwargs):
+        super(SimpleMonitor13, self).__init__(*args, **kwargs)
+        self.datapaths = {}
+        self.monitor_thread = hub.spawn(self._monitor)
 
     @set_ev_cls(ofp_event.EventOFPStateChange,[MAIN_DISPATCHER, DEAD_DISPATCHER])
     def _state_change_handler(self, ev):
@@ -54,7 +55,7 @@ class SimpleMonitor13(simple_switch_13.SimpleSwitch13):
         self.logger.info('-------- '
                         '--------- '
                         '---------')
-        for info in sorted(stat, key=attrgetter('port_no'):
+        for stat in sorted(body, key=attrgetter('port_no'):
             self.logger.info('%8x %8d %8d',
                             stat.port_no,
                             stat.rx_bytes,
